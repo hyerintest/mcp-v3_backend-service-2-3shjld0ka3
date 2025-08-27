@@ -1,0 +1,69 @@
+spring:
+  application:
+    name: backend-service-2-3shjld0ka3
+    version: v1
+    desc: backend-service-2-3shjld0ka3 RESTful API Service
+  mvc:
+    throw-exception-if-no-handler-found: true
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+  datasource:
+    dbcp2:
+      initial-size: 20
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_DB_PORT:3306}/${MYSQL_DB_NAME:test}?createDatabaseIfNotExist=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:0000}
+    hikari:
+      maximum-pool-size: 3
+      maxLifeTime: 3300000
+      connection-timeout: 30000
+      idle-timeout: 600000
+      connection-test-query: SELECT 1
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema-mysql.sql
+server:
+  port: 8080
+  forward-headers-strategy: framework
+service-path: ${SERVICE_PATH:}
+springdoc:
+  cache:
+    disabled: true
+  version: 1
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+    resolve-schema-properties: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    show-extensions: true
+    layout: BaseLayout
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /swagger-ui.html
+    url: ${SERVICE_PATH:}/v3/api-docs
+    config-url: ${SERVICE_PATH:}/v3/api-docs/swagger-config
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+    show-common-extensions: true
+  show-actuator: true
+  show-login-endpoint: true
+logging:
+  config: classpath:log4j2-spring.yml
+  level:
+    org.springframework.web.servlet.PageNotFound: 'OFF'
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+mybatis:
+  type-aliases-package: com.tlc.request
+  mapper-locations: mappers/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: false
+    cache-enabled: false
+    use-generated-keys: true
